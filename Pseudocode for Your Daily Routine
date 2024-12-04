@@ -1,0 +1,79 @@
+BEGIN FeedPet
+
+ 
+
+    // Step 1: Gather Supplies
+
+    PRINT "Gathering pet food and dish..."
+
+    DECLARE food AS STRING
+
+    DECLARE dish AS STRING
+
+    SET food = GetPetFood()
+
+    SET dish = GetPetDish()
+
+ 
+
+    IF food IS EMPTY OR dish IS EMPTY THEN
+
+        PRINT "Missing food or dish. Cannot proceed."
+
+        RETURN "Exiting feeding process."
+
+    ENDIF
+
+ 
+
+    // Step 2: Prepare Food
+
+    PRINT "Measuring the appropriate amount of food..."
+
+    DECLARE amount AS FLOAT
+
+    amount = MeasureFood(petWeight, petAge) 
+
+ 
+
+    // Step 3: Place Food in Dish
+
+    PRINT "Placing food into the dish..."
+
+    PlaceFoodInDish(dish, amount)
+
+ 
+
+    // Step 4: Serve Food
+
+    PRINT "Serving food to the pet..."
+
+    ServeDish(dish, petLocation) 
+
+ 
+
+    // Step 5: Monitor Eating
+
+    PRINT "Monitoring the pet while it eats..."
+
+    WHILE pet IS EATING DO
+
+        ObservePet()
+
+        IF PetLooksDistressed() THEN
+
+            PRINT "Pet looks distressed! Check for issues."
+
+            BREAK
+
+        ENDIF
+
+    ENDWHILE
+
+ 
+
+    DISPLAY "Feeding process completed successfully!"
+
+ 
+
+END FeedPet
