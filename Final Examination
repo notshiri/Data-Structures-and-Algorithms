@@ -1,0 +1,64 @@
+
+#include <iostream>
+
+#include <vector>
+
+#include <algorithm>
+
+using namespace std;
+
+
+
+int calculate(vector <int> & cost, int target) {
+
+    sort(cost.rbegin(), cost.rend());
+
+    
+
+    int totalCost = 0;
+
+    int n = cost.size();
+
+
+
+    for (int i = 0; i < n; i += 2){
+
+        totalCost += cost[i];
+
+        if (i + 1 < n) {
+
+            totalCost += cost[i + 1];
+
+        } 
+
+    }
+
+
+
+        totalCost -= target;
+
+
+
+    return max (totalCost, 0);
+
+}
+
+
+
+int main() {
+
+    vector <int> cost = {1,2,3};
+
+    int target = 1;
+
+
+
+    int result = calculate(cost, target);
+
+    cout << "Output: " << result << endl;
+
+
+
+    return 0;
+
+}
