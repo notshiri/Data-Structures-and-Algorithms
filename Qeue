@@ -1,0 +1,221 @@
+#include <iostream>
+
+#include <string>
+
+#include <queue>
+
+#include <iomanip>
+
+ 
+
+using namespace std;
+
+ 
+
+class Person {
+
+public:
+
+    string name;
+
+    int ticket_number;
+
+ 
+
+    Person(const string& name, int ticket_number)
+
+        : name(name), ticket_number(ticket_number) {}
+
+};
+
+ 
+
+class Queue {
+
+private:
+
+    queue<Person> personQueue; 
+
+    int ticket_counter;
+
+ 
+
+public:
+
+    Queue() : ticket_counter(1) {}
+
+ 
+
+    void enqueue(const string& name) {
+
+        Person person(name, ticket_counter++);
+
+        personQueue.push(person);
+
+        cout << person.name << " added to the queue with Ticket #" 
+
+             << setw(3) << setfill('0') << person.ticket_number << endl;
+
+        cout << "Queue size: " << size() << endl;
+
+    }
+
+ 
+
+    bool is_empty() {
+
+        return personQueue.empty();
+
+    }
+
+ 
+
+    int size() {
+
+        return personQueue.size();
+
+    }
+
+ 
+
+    void peek() {
+
+        if (!is_empty()) {
+
+            Person person = personQueue.front();
+
+            cout << "Next in line: " << person.name 
+
+                 << " (Ticket #" << setw(3) << setfill('0') << person.ticket_number << ")" << endl;
+
+        } else {
+
+            cout << "Queue is empty." << endl;
+
+        }
+
+    }
+
+ 
+
+    void position(const string& identifier) {
+
+        int pos = 1;
+
+        bool found = false;
+
+        queue<Person> tempQueue = personQueue; 
+
+        
+
+        while (!tempQueue.empty()) {
+
+            Person person = tempQueue.front();
+
+            if (person.name == identifier || to_string(person.ticket_number) == identifier) {
+
+                cout << person.name << " is currently at position " << pos << " in the queue." << endl;
+
+                found = true;
+
+                break;
+
+            }
+
+            tempQueue.pop();
+
+            pos++;
+
+        }
+
+        
+
+        if (!found) {
+
+            cout << "Person not found in the queue." << endl;
+
+        }
+
+    }
+
+};
+
+ 
+
+int main() {
+
+    Queue concertQueue;
+
+    int option;
+
+    string input;
+
+ 
+
+    cout << "Welcome to Olivia Rodrigo's Concert Ticketing System!\n" << endl;
+
+ 
+
+    while (true) {
+
+        cout << "\n1. Enqueue a person\n"
+
+             << "2. Check your position in the queue\n"
+
+             << "3. Exit\n"
+
+             << "Choose an option: ";
+
+        cin >> option;
+
+ 
+
+        if (cin.fail()) { 
+
+            cout << "Invalid input. Please enter a number between 1 and 3." << endl;
+
+            cin.clear();
+
+            cin.ignore(10000, '\n'); 
+
+            continue;
+
+        }
+
+ 
+
+        if (option == 1) {
+
+            cout << "\nEnter the name: ";
+
+            cin >> input;
+
+            concertQueue.enqueue(input);
+
+        } else if (option == 2) {
+
+            cout << "\nEnter your name: ";
+
+            cin >> input;
+
+            concertQueue.position(input);
+
+        } else if (option == 3) {
+
+            cout << "Exiting the system." << endl;
+
+            break;
+
+        }
+
+ else {
+
+            cout << "Invalid option. Please try again." << endl;
+
+        }
+
+    }
+
+    return 0;
+
+}
