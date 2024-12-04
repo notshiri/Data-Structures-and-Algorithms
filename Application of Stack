@@ -1,0 +1,188 @@
+
+#include <iostream>
+
+#include <string>
+
+#include <stack>
+
+#include <cctype>
+
+using namespace std;
+
+
+
+bool isDigit(char c) {
+
+    return isdigit(c);
+
+}
+
+
+
+bool isOp(char c) {
+
+    return (c == '+' || c == '-' || c == '/' || c == '*' || c == '(' || c == ')');
+
+}
+
+
+
+int getPrecedence(char c) {
+
+    switch (c) {
+
+        case '+':
+
+        case '-': return 1;
+
+        case '*':
+
+        case '/': return 2;
+
+        case '(': return 0;
+
+        default: return -1;
+
+    }
+
+}
+
+
+
+int operate(int val1, int val2, char op) {
+
+    if (op == '+') return val1 + val2;
+
+    if (op == '-') return val1 - val2;
+
+    if (op == '*') return val1 * val2;
+
+    if (op == '/') return val1 / val2;
+
+    return 0;
+
+}
+
+
+
+string infixToPostfix(string infix) {
+
+    stack<char> ops;
+
+    string postfix;
+
+
+
+    for (char spot : infix) {
+
+        if (isDigit(spot)) {
+
+            postfix += spot; 
+
+        } else if (spot == '(') {
+
+            ops.push(spot); 
+
+        } else if (spot == ')') {
+
+            while (!ops.empty() && ops.top() != '(') {
+
+                postfix += ops.top();
+
+                ops.pop();
+
+            }
+
+            ops.pop();
+
+        } else if (isOp(spot)) {
+
+            while (!ops.empty() && getPrecedence(ops.top()) >= getPrecedence(spot)) {
+
+                postfix += ops.top();
+
+                ops.pop();
+
+            }
+
+            ops.push(spot);
+
+        }
+
+    }
+
+
+
+    while (!ops.empty()) {
+
+        postfix += ops.top();
+
+        ops.pop();
+
+    }
+
+
+
+    return postfix;
+
+}
+
+
+
+int evaluatePostfix(string postfix) {
+
+    stack<int> vals;
+
+
+
+    for (char spot : postfix) {
+
+        if (isDigit(spot)) {
+
+            vals.push(spot - '0');
+
+        } else if (isOp(spot)) {
+
+            int val2 = vals.top(); vals.pop();
+
+            int val1 = vals.top(); vals.pop();
+
+            vals.push(operate(val1, val2, spot)); 
+
+        }
+
+    }
+
+
+
+    return vals.top(); 
+
+}
+
+
+
+int main() {
+
+    string expression;
+
+    cout << "Enter a mathematical expression: ";
+
+    getline(cin, expression);
+
+
+
+    string postfix = infixToPostfix(expression);
+
+    cout << "Postfix Expression: " << postfix << endl;
+
+
+
+    int result = evaluatePostfix(postfix);
+
+    cout << "Result: " << result << endl;
+
+
+
+    return 0;
+
+}
